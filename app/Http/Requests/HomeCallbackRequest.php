@@ -16,9 +16,9 @@ class HomeCallbackRequest extends FormRequest
     public function rules()
     {
         return [
-            'name' => 'required|max:255',
-            'content' => 'required|max:512',
-            'email' => 'required|unique:callback|max:255',
+            'name' => 'required|max:50',
+            'content' => 'required|max:300',
+            'email' => 'required|max:50',
 
 
         ];

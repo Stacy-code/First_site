@@ -16,7 +16,7 @@ class CreateCallbackTable extends Migration
         Schema::create('callback', function (Blueprint $table) {
             $table->id();
             $table->string('name');
-            $table->string('email')->unique();
+            $table->string('email');
             $table->text('content');
             $table->timestamp('created_at')->useCurrent();
             $table->boolean('confirmed')->default(false);

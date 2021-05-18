@@ -44,7 +44,18 @@ class Callback extends Model
             $item->confirmed = true;
             $item->save();
             $result = true;
+
+            $isSent = mail( $item->email, 'Confirmed' , 'BESTSITE.com confirmed your callback');
+
+            if(!$isSent){
+                dd('We sent your mail');
+            }
         }
+
+
+
         return $result;
+
+
     }
 }

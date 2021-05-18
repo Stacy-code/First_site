@@ -6,7 +6,8 @@ use App\Models\Callback;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Response;
-use Prophecy\Call\Call;
+
+
 
 class CallbackController extends Controller
 {
@@ -19,6 +20,7 @@ class CallbackController extends Controller
     public function index()
     {
         $items = Callback::paginate(10);
+
 
         return view('templates.admin.post.index', [
             'items' => $items
@@ -46,20 +48,19 @@ class CallbackController extends Controller
             'msg' => 'Не вдалося підтвердити!'
         ];
 
-
         if ($request->ajax()) {
 
             $result['success'] = Callback::confirm($request->post('id'));
             $result['msg'] = 'You confirmed callback';
-            // Запишемо результат видалення до сесії
-            // $_SESSION['delete'] = [
-            //     'success' => $result,
-            //     'msg' => $result ? 'Видалено 1 запис' : 'Не вдалося видалити!'
-            // ];
+
+
         }
+
 
         return \response()->json($result);
     }
+
+
 
     /**
      * Display the specified resource.
@@ -96,7 +97,7 @@ class CallbackController extends Controller
     {
         $request->validate([
             'name' => 'required|max:255',
-            'content' => 'required|max:512',
+            'content' => 'required|max:300',
             'email' => 'required||max:255',
         ]);
 

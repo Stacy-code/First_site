@@ -6,25 +6,25 @@
         <div class="row justify-content-center">
             <div class="col-lg-4">
         <?php if (!empty($callbackItems)) : ?>
+
         <div id="carouselExampleControls" class="carousel slide " data-ride="carousel">
             <div class="carousel-inner">
                 <?php $step = 0; ?>
                 <?php foreach ($callbackItems as $item) : ?>
-                <?php if($item['confirmed']==true) : ?>
                 <?php $itemClass = $step > 0 ? 'carousel-item' : 'carousel-item active'?>
                 <div class="<?= $itemClass ?>">
-                    <img class="d-block w-100" src="{{url('/public/images/background.jpg')}}" alt="Slide: <?= $step ?>">
+                    <img class="d-block w-100" src="{{url('/public/images/grey.jpg')}}" alt="Slide: <?= $step ?>">
                     <div class="carousel-caption d-none d-md-block">
 
-                        <h5>{{$item['name']}}</h5>
+                        <h5 >{{$item['name']}}</h5>
                         <p>{{$item['content']}}</p>
-                        <p>{{$item['date']}}</p>
+                        <p>{{$item['created_at']}}</p>
 
                     </div>
 
                 </div>
                 <?php ++$step ?>
-                    <?php endif; ?>
+
                 <?php endforeach; ?>
             </div>
             <a class="carousel-control-prev" href="#carouselExampleControls" role="button" data-slide="prev">
@@ -36,6 +36,8 @@
                 <span class="sr-only">Next</span>
             </a>
         </div>
+
+
         <?php endif; ?>
             </div>
         </div>

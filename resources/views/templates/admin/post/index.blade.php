@@ -33,7 +33,7 @@
                 </tr>
                 </thead>
                 <tbody>
-                @if(!empty($items))
+                @if($items->total() > 0)
                     @foreach($items as $item)
                         <tr>
                             <th scope="row">{{ $item->id }}</th>
@@ -41,7 +41,7 @@
                             <td>{{ $item->email }}</td>
                             <td>{{ $item->content }}</td>
                             <td>{{ $item->created_at }}</td>
-                            <td>{{ $item->confirmed }}</td>
+                            <td class="ajax-response">{{ $item->confirmed }}</td>
                             <td>
                                 <form action="{{ route('admin.post.destroy',$item->id ) }}" method="POST">
                                     <a class="btn btn-secondary"
@@ -56,8 +56,12 @@
                         </tr>
                     @endforeach
                 @else
-                    <tr aria-colspan="4">
-                        <td colspan="4">EMPTY LIST</td>
+                    <tr aria-colspan="8" >
+                        <td colspan="8">
+                            <div class="alert alert-danger text-center" role="alert">
+                                Empty list
+                            </div>
+                        </td>
                     </tr>
                 @endif
                 </tbody>
@@ -88,7 +92,11 @@
                         dataType: 'json',
                         success: function (response) {
                             if(response.success){
-                                window.location.reload();
+                                //window.location.reload();
+                                var rowEl = that.closest('tr');
+
+                                rowEl.find('.ajax-response').text(1);
+
                             }
 
                         }

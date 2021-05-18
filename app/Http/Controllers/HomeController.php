@@ -11,11 +11,13 @@ class HomeController extends Controller
 
     public function index()
     {
-        $callbackItems = Callback::all();
+        $callbackItems = Callback::where('confirmed' , 1)->get();
+
 
         return view('templates.home' , [
             'callbackItems' => $callbackItems
         ]);
+
     }
     //
 

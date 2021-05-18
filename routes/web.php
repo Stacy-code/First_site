@@ -24,4 +24,5 @@ Route::post('/callback', [HomeController::class, 'callback'])->name('callback');
 Route::prefix('admin')->name('admin.')->group(function () {
     Route::resource('post', CallbackController::class);
     Route::post('post/confirm', [CallbackController::class, 'confirm'])->name('post.confirm');
+
 });
