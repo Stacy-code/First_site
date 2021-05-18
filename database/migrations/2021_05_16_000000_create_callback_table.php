@@ -19,6 +19,7 @@ class CreateCallbackTable extends Migration
             $table->string('email')->unique();
             $table->text('content');
             $table->timestamp('created_at')->useCurrent();
+            $table->boolean('confirmed')->default(false);
         });
     }
 

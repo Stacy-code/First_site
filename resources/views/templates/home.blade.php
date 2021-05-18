@@ -10,16 +10,21 @@
             <div class="carousel-inner">
                 <?php $step = 0; ?>
                 <?php foreach ($callbackItems as $item) : ?>
+                <?php if($item['confirmed']==true) : ?>
                 <?php $itemClass = $step > 0 ? 'carousel-item' : 'carousel-item active'?>
                 <div class="<?= $itemClass ?>">
                     <img class="d-block w-100" src="{{url('/public/images/background.jpg')}}" alt="Slide: <?= $step ?>">
                     <div class="carousel-caption d-none d-md-block">
+
                         <h5>{{$item['name']}}</h5>
                         <p>{{$item['content']}}</p>
                         <p>{{$item['date']}}</p>
+
                     </div>
+
                 </div>
                 <?php ++$step ?>
+                    <?php endif; ?>
                 <?php endforeach; ?>
             </div>
             <a class="carousel-control-prev" href="#carouselExampleControls" role="button" data-slide="prev">
@@ -45,8 +50,8 @@
                 </ul>
             </div>
         @endif
-            <div class="row justify-content-center mt-5">
-        <form  class="col-lg-4 "  method="POST" action="{{ route('callback') }}">
+            <div class="row justify-content-center mt-5 " >
+        <form  class="col-lg-4 border  rounded shadow p-3 mb-5 bg-white rounded"  method="POST" action="{{ route('callback') }}">
             @csrf
             <div class="form-group " >
                 <label for="name">Name</label>

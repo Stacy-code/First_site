@@ -25,6 +25,7 @@ class Callback extends Model
         'name',
         'email',
         'content',
+        'confirmed',
     ];
 
     /**
@@ -35,4 +36,15 @@ class Callback extends Model
     protected $casts = [
         'created_at' => 'datetime',
     ];
+
+    protected function confirm($id){
+        $result = false;
+        $item = Callback::find($id);
+        if ($item instanceof Callback) {
+            $item->confirmed = true;
+            $item->save();
+            $result = true;
+        }
+        return $result;
+    }
 }
