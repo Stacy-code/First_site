@@ -13,6 +13,25 @@
             </li>
         </ol>
     </nav>
+    @if ($errors->any())
+
+        <div class="alert alert-danger">
+            <ul>
+                @foreach ($errors->all() as $error)
+                    <li>{{ $error }}</li>
+                @endforeach
+            </ul>
+        </div>
+
+    @endif
+    @if (session('success'))
+        <div id="msg" class="alert alert-success alert-dismissible fade show" role="alert">
+            <strong>{{ session('success') }}</strong>
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+    @endif
     <div class="container-fluid">
         <div class="row justify-content-center">
             <div class="col-lg-4">
@@ -23,8 +42,10 @@
                         <?php foreach ($callbackItems as $item) : ?>
                         <?php $itemClass = $step > 0 ? 'carousel-item' : 'carousel-item active'?>
                         <div class="<?= $itemClass ?>">
-                            <div class="d-flex" style="height: 300px; background-size: cover; background-image: url({{ asset('storage/images/paper.jpg') }});">
-                                <div class="carousel-caption card px-2 text-dark" style="bottom: unset; top: 50%; transform: translateY(-50%);">
+                            <div class="d-flex"
+                                 style="height: 300px; background-size: cover; background-image: url({{ asset('storage/images/paper.jpg') }});">
+                                <div class="carousel-caption card px-2 text-dark"
+                                     style="bottom: unset; top: 50%; transform: translateY(-50%);">
                                     <h5>{{$item['name']}}</h5>
                                     <p>{{$item['content']}}</p>
                                     <p>{{$item['created_at']}}</p>
@@ -46,31 +67,15 @@
                 <?php endif; ?>
             </div>
         </div>
-        @if ($errors->any())
-            <div class="alert alert-danger">
-                <ul>
-                    @foreach ($errors->all() as $error)
-                        <li>{{ $error }}</li>
-                    @endforeach
-                </ul>
-            </div>
-        @endif
-        @if (session('success'))
-            <div id="msg" class="alert alert-success alert-dismissible fade show" role="alert">
-                <strong>{{ session('success') }}</strong>
-                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-        @endif
+
         <div class="row justify-content-center mt-5 ">
             <form class="col-lg-4 border  rounded shadow p-3 mb-5 bg-white rounded" method="POST"
-                action="{{ route('callback') }}">
+                  action="{{ route('callback') }}">
                 @csrf
                 <div class="form-group ">
                     <label for="name">Name</label>
                     <input type="text" class="form-control" name="name" id="name" aria-describedby="emailHelp"
-                        value="{{ old('name') }}">
+                           value="{{ old('name') }}">
                 </div>
                 <div class="form-group">
                     <label for="email">Email</label>

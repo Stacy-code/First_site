@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Client\HttpClientException;
 
+
 /**
  * Class CallbackController
  *
@@ -22,7 +23,7 @@ class CallbackController extends Controller
     public function index()
     {
         // Пагінація сторінки в 10 записів
-        $items = Callback::paginate(10);
+        $items = Callback::paginate(5);
 
         // Відображення списка відгуків
         return view('templates.admin.callback.index', [
