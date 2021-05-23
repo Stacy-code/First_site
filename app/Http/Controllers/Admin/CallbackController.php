@@ -5,24 +5,27 @@ namespace App\Http\Controllers\Admin;
 use App\Models\Callback;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-use Illuminate\Http\Response;
+use Illuminate\Http\Client\HttpClientException;
 
-
-
+/**
+ * Class CallbackController
+ *
+ * @package App\Http\Controllers\Admin
+ */
 class CallbackController extends Controller
 {
-
     /**
-     * Display a listing of the resource.
+     * Відображення списка відгуків клієнтів
      *
      * @return mixed
      */
     public function index()
     {
+        // Пагінація сторінки в 10 записів
         $items = Callback::paginate(10);
 
-
-        return view('templates.admin.post.index', [
+        // Відображення списка відгуків
+        return view('templates.admin.callback.index', [
             'items' => $items
         ]);
     }
@@ -30,70 +33,67 @@ class CallbackController extends Controller
     /**
      * Show the form for creating a new resource.
      *
-     * @return mixed
+     * @throws HttpClientException
      */
     public function create()
     {
-        //return view('templates.admin.post.create');
+        // @todo Show create view form
+        throw new HttpClientException('404');
     }
-
 
     /**
-     * @param $id
+     * Store a newly created resource in storage.
+     *
+     * @param Request $request
+     *
+     * @throws HttpClientException
      */
-    public function confirm(Request $request){
-
-        $result = [
-            'success' => false,
-            'msg' => 'Не вдалося підтвердити!'
-        ];
-
-        if ($request->ajax()) {
-
-            $result['success'] = Callback::confirm($request->post('id'));
-            $result['msg'] = 'You confirmed callback';
-
-
-        }
-
-
-        return \response()->json($result);
+    public function store(Request $request)
+    {
+        // @todo Save created request
+        throw new HttpClientException('404');
     }
-
-
 
     /**
      * Display the specified resource.
      *
      * @param int $id
      *
-     * @return \Illuminate\Http\Response
+     * @throws HttpClientException
      */
-    public function show($id)
+    public function show(int $id)
     {
         // @todo show view on one record
+        throw new HttpClientException('404');
     }
 
     /**
-     * Show the form for editing the specified resource.
+     * Шукаємо відгук по id редагуємо відгук
      *
-     * @param string|null $id
+     * @param int|null $id
+     *
+     * @return mixed
+     * @throws HttpClientException
      */
-    public function edit(string $id = null)
+    public function edit(int $id = null)
     {
         $callback = Callback::find($id);
-        return view('templates.admin.post.edit',compact('callback'));
+        if ($callback instanceof Callback) {
+            return view('templates.admin.callback.edit', compact('callback'));
+        }
+        throw new HttpClientException('404');
     }
 
     /**
-     * Update the specified resource in storage.
+     * Перевіряємо поля
+     * Оновлюємо дані після едагування в таблиці
      *
-     * @param \Illuminate\Http\Request $request
-     * @param int                      $id
+     * @param Request $request
+     * @param int     $id
      *
-     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Http\RedirectResponse|\Illuminate\Http\Response|\Illuminate\Routing\Redirector
+     * @return mixed
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, int $id)
     {
         $request->validate([
             'name' => 'required|max:255',
@@ -101,31 +101,60 @@ class CallbackController extends Controller
             'email' => 'required||max:255',
         ]);
 
-
         $callback = Callback::find($id);
         $callback->name = $request->get('name');
         $callback->email = $request->get('email');
         $callback->content = $request->get('content');
-
         $callback->update();
 
-        return redirect('/admin/post')->with('success', 'Callback updated successfully');
+        return redirect('/admin/callback')->with('success', 'Callback updated successfully');
     }
 
     /**
-     * Remove the specified resource from storage.
+     * Видалення відгуку
      *
      * @param int $id
      *
-     * @return \Illuminate\Http\Response
+     * @return mixed
      */
-    public function destroy($id)
+    public function destroy(int $id)
     {
         $callback = Callback::find($id);
+        if ($callback instanceof Callback) {
+            $callback->delete();
+            return redirect('/admin/callback')->with('success', 'Callback deleted');
+        }
+        return redirect('/admin/callback')->with('error', 'Callback delete error');
+    }
 
-        $callback->delete();
+    /**
+     * Підтверджуємо наш відгук за допомогою ajax
+     *
+     * @param Request $request
+     *
+     * @return mixed
+     * @throws HttpClientException
+     */
+    public function confirm(Request $request)
+    {
+        $result = ['success' => false];
+        if ($request->ajax() && $request->isMethod('post')) {
+            $model = Callback::find($request->post('id'));
+            if ($model instanceof Callback) {
+                $model->confirmed = true;
+                $result['success'] = $model->save();
 
-        return redirect('/admin/post')->with('success', 'Callback deleted');
+                // Відправляємо повідомлення автору відгука
+                mail($model->email, 'Confirmed', 'BESTSITE.com confirmed your callback');
+            }
+
+            $result['msg'] = $result['success']
+                ? 'You confirmed callback'
+                : 'Не вдалося підтвердити!';
+
+            // Відправляємо відповідь в json форматі
+            return \response()->json($result);
+        }
+        throw new HttpClientException('404');
     }
 }
-

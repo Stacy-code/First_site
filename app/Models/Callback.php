@@ -2,30 +2,39 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
-
-
+/**
+ * Class Callback
+ *
+ * @package App\Models
+ */
 class Callback extends Model
 {
     use HasFactory;
 
+    /**
+     * Назва таблиці
+     *
+     * @var string $table
+     */
+    protected $table = 'callback';
 
-
-    protected $table='callback'; //назва таблицы
-
+    /**
+     * Вимикаємо збереження дати додавання та збереження
+     *
+     * @var bool $timestamps
+     */
     public $timestamps = false;
+
     /**
      * The model's default values for attributes.
      *
      * @var array
      */
     protected $fillable = [
-        'name',
-        'email',
-        'content',
-        'confirmed',
+        'name', 'email', 'content', 'confirmed'
     ];
 
     /**
@@ -34,28 +43,20 @@ class Callback extends Model
      * @var array
      */
     protected $casts = [
-        'created_at' => 'datetime',
+        'created_at' => 'datetime'
     ];
 
-    protected function confirm($id){
-        $result = false;
-        $item = Callback::find($id);
-        if ($item instanceof Callback) {
-            $item->confirmed = true;
-            $item->save();
-            $result = true;
+    /**
+     * Short content
+     *
+     * @param int $length
+     *
+     * @return string
+     */
+    public function getShortContent(int $length = 50): string
+    {
+        $content = $this->getAttribute('content');
 
-            $isSent = mail( $item->email, 'Confirmed' , 'BESTSITE.com confirmed your callback');
-
-            if(!$isSent){
-                dd('We sent your mail');
-            }
-        }
-
-
-
-        return $result;
-
-
+        return mb_strimwidth($content, 0, $length, '...');
     }
 }

@@ -1,7 +1,6 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\SiteController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\Admin\CallbackController;
 /*
@@ -22,7 +21,7 @@ Route::post('/callback', [HomeController::class, 'callback'])->name('callback');
  * Роути адмінки
  */
 Route::prefix('admin')->name('admin.')->group(function () {
-    Route::resource('post', CallbackController::class);
-    Route::post('post/confirm', [CallbackController::class, 'confirm'])->name('post.confirm');
+    Route::resource('callback', CallbackController::class);
+    Route::post('callback/confirm', [CallbackController::class, 'confirm'])->name('callback.confirm');
 
 });

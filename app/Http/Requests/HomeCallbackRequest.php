@@ -1,26 +1,35 @@
 <?php
 
-
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
+/**
+ * Class HomeCallbackRequest
+ *
+ * @package App\Http\Requests
+ */
 class HomeCallbackRequest extends FormRequest
 {
-
-    public function authorize()
+    /**
+     * @return bool
+     */
+    public function authorize(): bool
     {
         return true;
     }
 
-    public function rules()
+    /**
+     * Правила валыдації
+     *
+     * @return array
+     */
+    public function rules(): array
     {
         return [
             'name' => 'required|max:50',
             'content' => 'required|max:300',
             'email' => 'required|max:50',
-
-
         ];
     }
 }
