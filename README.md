@@ -13,7 +13,7 @@ PHP version 7.3 or higher is required.
 
 Run command in you domain root
 
-`git clone https://github.com/sihoulette/laravel.local.git .`
+`git clone https://github.com/Stacy-code/First_site .`
 
 ## Update composer dependence
 
